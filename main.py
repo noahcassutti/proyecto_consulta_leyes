@@ -1,7 +1,7 @@
 import sqlite3
 import pandas as pd
 
-
+#Funcion para insertar las leyes que haga falta
 def insertLaw():
     #Nro = 0
     tipoNorma = input("Tipo de Normativa: ")
@@ -16,17 +16,20 @@ def insertLaw():
                     (tipoNorma, numNorma, fecha, desc, cat, jur, org, keyW))
     P.commit
 
+#Funcion para ver las leyes ya insertadas
 def verLaw():
     cursor.execute("SELECT * FROM laws")        
     results = cursor.fetchall()
     results_df = pd.DataFrame(results, columns=["Nro","TipoDeNormativa", "NumeroDeNormativa", "Fecha", "Descripcion", "Categoria", "Jurisdiccion", "OrganoLegislativo", "PalabraClave"])
     print(results_df)
-    
+
+#Funcion a la que le podemos ir añadiendo las opciones    
 def menu():
     global opcion
     print("------------------Menu------------------")
     opcion = input("Seleccione 1 para insertar Leyes \nSeleccione 2 para ver las Leyes Existentes\n")
 
+#preguntar si sigue agregando o sale al menu
 def preguntarOtra():
     otro = (input("Otra?:(si/no) "))
     if otro == "si":
@@ -35,6 +38,7 @@ def preguntarOtra():
         print("Todas Agregados Correctamente")
         menu()
 
+#conexion a la base de datos y poniendo de alias la letra P de proyecto
 with sqlite3.connect("Proyect") as P:
     
     cursor = P.cursor()

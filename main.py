@@ -66,4 +66,32 @@ class Leyes:
                                                     "OrganoLegislativo", "PalabraClave"])
             print(results_df)
 
-#--------------------------------------------------
+# Clase Mods para actualizar y eliminar registros
+class Mods:
+    @staticmethod
+    def actualizar_por_nro(P, nro):
+        cursor = P.cursor()
+        cursor.execute("SELECT * FROM Leyes WHERE Nro=?", (nro,))
+        registro_Leyes = cursor.fetchone()
+
+        if registro_Leyes is None:
+            print("No se encontró ningún registro con el número especificado.")
+            return
+
+        #tipoNorma = input("Tipo de Normativa: ")
+        #numNorma = input("Numero de Normativa: ")
+        fecha = input("Fecha: ")
+        #desc = input("Descripcion: ")
+
+        cursor.execute("UPDATE Leyes SET Fecha=? WHERE Nro=?",
+                       (fecha, nro))
+
+        cursor.execute("SELECT * FROM Jurisdiccion WHERE Nro=?", (nro,))
+        registro_Jurisdiccion = cursor.fetchone()
+
+        if registro_Jurisdiccion is not None:
+            cat = input("Categoria: ")
+            jur = input("Jurisdiccion: ")
+
+            cursor.execute("UPDATE Jurisdiccion SET Categoria=?, Jurisdiccion=? WHERE Nro=?",
+                           (cat, jur, nro))

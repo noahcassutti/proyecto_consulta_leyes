@@ -118,3 +118,27 @@ class Mods:
 
         P.commit()
         print("Registro eliminado con éxito.")    
+
+# Función para mostrar el menú
+def menu():
+    print("------------------Menu------------------")
+    print("Seleccione 1 para insertar Leyes")
+    print("Seleccione 2 para ver las Leyes Existentes")
+    print("Seleccione 3 para salir del programa")
+    print("Seleccione 4 para actualizar un registro")
+    print("Seleccione 5 para eliminar un registro")
+    print("Seleccione 6 para buscar un registro por palabra clave")
+
+
+# Función para preguntar si se agregan más leyes
+def preguntarOtra(objeto_leyes):
+    otro = input("¿Agregar otra ley? (si/no): ")
+    if otro == "si":
+        objeto_leyes.ingresar_datos()
+        objeto_leyes.insertar_ley_Leyes(P)
+        objeto_leyes.insertar_ley_Jurisdiccion(P)
+        objeto_leyes.insertar_ley_Identificadores(P)
+        preguntarOtra(objeto_leyes)
+    elif otro == "no":
+        print("Todas las leyes han sido agregadas correctamente.")
+        

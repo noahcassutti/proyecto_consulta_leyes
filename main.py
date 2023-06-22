@@ -95,3 +95,26 @@ class Mods:
 
             cursor.execute("UPDATE Jurisdiccion SET Categoria=?, Jurisdiccion=? WHERE Nro=?",
                            (cat, jur, nro))
+        cursor.execute("SELECT * FROM Identificadores WHERE Nro=?", (nro,))
+        registro_Identificadores = cursor.fetchone()
+
+        if registro_Identificadores is not None:
+            org = input("Organo Legislativo: ")
+            keyW = input("Palabra Clave: ")
+
+            cursor.execute("UPDATE Identificadores SET OrganoLegislativo=?, PalabraClave=? WHERE Nro=?",
+                           (org, keyW, nro))
+
+        P.commit()
+        print("Registro actualizado con éxito.")
+
+    @staticmethod
+    def eliminar_por_keyw(P, keyw):
+        cursor = P.cursor()
+
+        cursor.execute("DELETE FROM Identificadores WHERE PalabraClave=?", (keyw,))
+        cursor.execute("DELETE FROM Jurisdiccion WHERE Nro IN (SELECT Nro FROM Identificadores WHERE PalabraClave=?)", (keyw,))
+        cursor.execute("DELETE FROM Leyes WHERE Nro IN (SELECT Nro FROM Identificadores WHERE PalabraClave=?)", (keyw,))
+
+        P.commit()
+        print("Registro eliminado con éxito.")    

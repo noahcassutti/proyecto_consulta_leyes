@@ -141,4 +141,25 @@ def preguntarOtra(objeto_leyes):
         preguntarOtra(objeto_leyes)
     elif otro == "no":
         print("Todas las leyes han sido agregadas correctamente.")
-        
+# Crear la base de datos y las tablas
+
+with sqlite3.connect("Proyect.db") as P:
+    cursor = P.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS Leyes (Nro INTEGER PRIMARY KEY AUTOINCREMENT, TipoDeNormativa VARCHAR(50), NumeroDeNormativa VARCHAR(50), Fecha VARCHAR(20), Descripcion VARCHAR(550))")
+    cursor.execute("CREATE TABLE IF NOT EXISTS Jurisdiccion (Nro INTEGER PRIMARY KEY, Categoria VARCHAR(50), Jurisdiccion VARCHAR(50))")
+    cursor.execute("CREATE TABLE IF NOT EXISTS Identificadores (Nro INTEGER PRIMARY KEY, OrganoLegislativo VARCHAR(50), PalabraClave VARCHAR(50))")
+
+    # Crear objeto Leyes
+    objeto_leyes = Leyes()
+
+    # Ejecutar el menú
+    while True:
+        menu()
+        opcion = input("Ingrese su opción: ")
+
+        if opcion == "1":
+            objeto_leyes.ingresar_datos()
+            objeto_leyes.insertar_ley_Leyes(P)
+            objeto_leyes.insertar_ley_Jurisdiccion(P)
+            objeto_leyes.insertar_ley_Identificadores(P)
+            preguntarOtra(objeto_leyes)      

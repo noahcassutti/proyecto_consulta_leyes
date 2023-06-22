@@ -1,70 +1,69 @@
 import sqlite3
 import pandas as pd
 
-#Funcion para insertar las leyes que haga falta
-def insertLaw():
-    #Nro = 0
-    tipoNorma = input("Tipo de Normativa: ")
-    numNorma = input("Numero de Normativa: ")
-    fecha = input("Fecha: ")
-    desc = input("Descripcion: ")
-    cat = input("Categoria: ")
-    jur = input("Jurisdiccion: ")
-    org = input("Organo Legislativo: ")
-    keyW = input("Palabra Clave: ")
-    cursor.execute("INSERT INTO laws (TipoDeNormativa,NumeroDeNormativa,Fecha, Descripcion, Categoria, Jurisdiccion, OrganoLegislativo, PalabraClave) Values(?,?,?,?,?,?,?,?)",
-                    (tipoNorma, numNorma, fecha, desc, cat, jur, org, keyW))
-    P.commit
+# Clase Leyes para insertar y ver leyes
+class Leyes:
+    def __init__(self):
+        self.tipoNorma = None
+        self.numNorma = None
+        self.fecha = None
+        self.desc = None
+        self.cat = None
+        self.jur = None
+        self.org = None
+        self.keyW = None
 
-#Funcion para ver las leyes ya insertadas
-def verLaw():
-    cursor.execute("SELECT * FROM laws")        
-    results = cursor.fetchall()
-    results_df = pd.DataFrame(results, columns=["Nro","TipoDeNormativa", "NumeroDeNormativa", "Fecha", "Descripcion", "Categoria", "Jurisdiccion", "OrganoLegislativo", "PalabraClave"])
-    print(results_df)
+    def ingresar_datos(self):
+        self.tipoNorma = input("Tipo de Normativa: ")
+        self.numNorma = input("Numero de Normativa (Solo Numeros): ")
+        self.fecha = input("Fecha Formato dd/mm/aaaa: ")
+        self.desc = input("Descripcion: ")
+        self.cat = input("Categoria: ")
+        self.jur = input("Jurisdiccion: ")
+        self.org = input("Organo Legislativo: ")
+        self.keyW = input("Palabra Clave: ")
 
-#Funcion a la que le podemos ir añadiendo las opciones    
-def menu():
-    global opcion
-    print("------------------Menu------------------")
-    opcion = input("Seleccione 1 para insertar Leyes \nSeleccione 2 para ver las Leyes Existentes\n")
+    def insertar_ley_Leyes(self, P):
+        cursor = P.cursor()
+        cursor.execute("INSERT INTO Leyes (TipoDeNormativa, NumeroDeNormativa, Fecha, Descripcion) VALUES (?,?,?,?)",
+                       (self.tipoNorma, self.numNorma, self.fecha, self.desc))
 
-#preguntar si sigue agregando o sale al menu
-def preguntarOtra():
-    otro = (input("Otra?:(si/no) "))
-    if otro == "si":
-        insertLaw()
-    elif otro == "no":
-        print("Todas Agregados Correctamente")
-        menu()
+    def insertar_ley_Jurisdiccion(self, P):
+        cursor = P.cursor()
+        cursor.execute("INSERT INTO Jurisdiccion (Nro, Categoria, Jurisdiccion) VALUES (?,?,?)",
+                       (self.numNorma, self.cat, self.jur))
 
-#conexion a la base de datos y poniendo de alias la letra P de proyecto
-with sqlite3.connect("Proyect") as P:
-    
-    cursor = P.cursor()
-    cursor.execute("Create table if not exists laws (Nro INTEGER PRIMARY KEY AUTOINCREMENT, TipoDeNormativa VARCHAR(50), NumeroDeNormativa VARCHAR(50), Fecha VARCHAR(20), Descripcion VARCHAR(50), Categoria VARCHAR(50), Jurisdiccion VARCHAR(50), OrganoLegislativo VARCHAR(50), PalabraClave VARCHAR(50))")
-    
-    menu()
-    
-    if opcion == "1":
-        insertLaw()
-        preguntarOtra()
-        preguntarOtra()
-        preguntarOtra()
-       
-        menu()
-        
-    elif opcion == "2":
-        verLaw()
-        menu()
-        fin = input("Salir del programa? (si/no)")
-        if fin == "no":
-            menu()
-        elif fin == "si":
-            print("Adios...")
-            
-    else:
-        print("Opcion Incorrecta")
+    def insertar_ley_Identificadores(self, P):
+        cursor = P.cursor()
+        cursor.execute("INSERT INTO Identificadores (Nro, OrganoLegislativo, PalabraClave) VALUES (?,?,?)",
+                       (self.numNorma, self.org, self.keyW))
 
-        # comentario de prueba
-        # prueba
+    def ver_laws_unificadas(self, P):
+        cursor = P.cursor()
+        cursor.execute("SELECT t1.Nro, t1.TipoDeNormativa, t1.NumeroDeNormativa, t1.Fecha, t1.Descripcion, t2.Categoria, t2.Jurisdiccion, t3.OrganoLegislativo, t3.PalabraClave "
+                       "FROM Leyes AS t1 "
+                       "JOIN Jurisdiccion AS t2 ON t1.NumeroDeNormativa = t2.Nro "
+                       "JOIN Identificadores AS t3 ON t1.NumeroDeNormativa = t3.Nro")
+        results = cursor.fetchall()
+        results_df = pd.DataFrame(results, columns=["Nro", "TipoDeNormativa", "NumeroDeNormativa", "Fecha",
+                                                    "Descripcion", "Categoria", "Jurisdiccion",
+                                                    "OrganoLegislativo", "PalabraClave"])
+        print(results_df)
+    def buscar_por_palabra_clave(self, P):
+        palabra_clave = input("Ingrese la palabra clave a buscar: ")
+        cursor = P.cursor()
+        cursor.execute("SELECT t1.Nro, t1.TipoDeNormativa, t1.NumeroDeNormativa, t1.Fecha, t1.Descripcion, t2.Categoria, t2.Jurisdiccion, t3.OrganoLegislativo, t3.PalabraClave "
+                   "FROM Leyes AS t1 "
+                   "JOIN Jurisdiccion AS t2 ON t1.NumeroDeNormativa = t2.Nro "
+                   "JOIN Identificadores AS t3 ON t1.NumeroDeNormativa = t3.Nro "
+                   "WHERE t3.PalabraClave=?", (palabra_clave,))
+        results = cursor.fetchall()
+        if not results:
+            print("Palabra no encontrada.")
+        else:
+            results_df = pd.DataFrame(results, columns=["Nro", "TipoDeNormativa", "NumeroDeNormativa", "Fecha",
+                                                    "Descripcion", "Categoria", "Jurisdiccion",
+                                                    "OrganoLegislativo", "PalabraClave"])
+            print(results_df)
+
+#--------------------------------------------------

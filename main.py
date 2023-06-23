@@ -125,7 +125,7 @@ def menu():
     print("Seleccione 1 para insertar Leyes")
     print("Seleccione 2 para ver las Leyes Existentes")
     print("Seleccione 3 para salir del programa")
-    print("Seleccione 4 para actualizar un registro")
+    print("Seleccione 4 para actualizar la fecha de un registro")
     print("Seleccione 5 para eliminar un registro")
     print("Seleccione 6 para buscar un registro por palabra clave")
 

@@ -1,4 +1,8 @@
+INTEGRANTES DEL GRUPO:
 
-=======
-# programacion
->>>>>>> parent of 077065e (perdon por adelantarme un poco)
+LEO PLAZA
+DENISSE SABEFF
+NOAH CASSUTTI
+SANTIAGO TULIAN
+MARCOS PORTELA
+MATEO OTERO

@@ -112,12 +112,31 @@ class Mods:
     def eliminar_por_keyw(P, keyw):
         cursor = P.cursor()
 
-        cursor.execute("DELETE FROM Identificadores WHERE PalabraClave=?", (keyw,))
-        cursor.execute("DELETE FROM Jurisdiccion WHERE Nro IN (SELECT Nro FROM Identificadores WHERE PalabraClave=?)", (keyw,))
-        cursor.execute("DELETE FROM Leyes WHERE Nro IN (SELECT Nro FROM Identificadores WHERE PalabraClave=?)", (keyw,))
+    
+    @staticmethod
+    def eliminar_por_keyw(P, keyw):
+        cursor = P.cursor()
 
-        P.commit()
-        print("Registro eliminado con éxito.")    
+        # Obtener los Nros asociados a la palabra clave desde la tabla Identificadores
+        cursor.execute("SELECT Nro FROM Identificadores WHERE PalabraClave=?", (keyw,))
+        numeros = cursor.fetchall()
+
+        if numeros:
+            numeros = [n[0] for n in numeros]
+
+            # Eliminar los registros de la tabla Identificadores utilizando los Nros obtenidos
+            cursor.execute("DELETE FROM Identificadores WHERE Nro IN ({})".format(','.join('?' for _ in numeros)), numeros)
+
+            # Eliminar los registros de la tabla Jurisdiccion utilizando los Nros obtenidos
+            cursor.execute("DELETE FROM Jurisdiccion WHERE Nro IN ({})".format(','.join('?' for _ in numeros)), numeros)
+
+            # Eliminar los registros de la tabla Leyes utilizando los Nros obtenidos
+            cursor.execute("DELETE FROM Leyes WHERE NumeroDeNormativa IN ({})".format(','.join('?' for _ in numeros)), numeros)
+
+            P.commit()
+            print("Registros eliminados con éxito.")
+        else:
+            print("No se encontraron registros con la palabra clave especificada.")   
 
 # Función para mostrar el menú
 def menu():

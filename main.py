@@ -162,4 +162,26 @@ with sqlite3.connect("Proyect.db") as P:
             objeto_leyes.insertar_ley_Leyes(P)
             objeto_leyes.insertar_ley_Jurisdiccion(P)
             objeto_leyes.insertar_ley_Identificadores(P)
-            preguntarOtra(objeto_leyes)      
+            preguntarOtra(objeto_leyes)     
+        
+        elif opcion == "2":
+            objeto_leyes.ver_laws_unificadas(P)
+
+        elif opcion == "3":
+            print("Adios...")
+            break
+
+        elif opcion == "4":
+            nro = input("Ingrese el número (Nro) del registro a actualizar: ")
+            objeto_mods = Mods()
+            objeto_mods.actualizar_por_nro(P, nro)
+
+        elif opcion == "5":
+            keyw = input("Ingrese la palabra clave (keyW) del registro a eliminar: ")
+            objeto_mods = Mods()
+            objeto_mods.eliminar_por_keyw(P, keyw)
+        elif opcion == "6":
+            objeto_leyes.buscar_por_palabra_clave(P)
+        
+        else:
+            print("Opción incorrecta. Intente nuevamente.")

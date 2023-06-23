@@ -1,5 +1,2 @@
-# programacion
-
-=======
-# programacion
->>>>>>> parent of 077065e (perdon por adelantarme un poco)
+Integrantes:
+Plaza Domina Leonardo Nicolas 32124350

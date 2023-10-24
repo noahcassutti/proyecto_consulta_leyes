@@ -33,7 +33,28 @@ Para utilizar el proyecto, sigue estos pasos:
    - **6. Buscar Registro por Palabra Clave**: Permite buscar leyes por palabra clave.
 
 5. **Colaboración en GitHub**: El proyecto está alojado en GitHub y se utiliza un flujo de trabajo de Git para colaborar en el desarrollo. Cada miembro del equipo debe colaborar mediante confirmaciones (commits) al proyecto.
+Sí, tu proyecto de consulta de leyes implementa un conjunto básico de operaciones CRUD (Crear, Leer, Actualizar y Eliminar) en una base de datos SQLite. A continuación, se detallan cómo estas operaciones CRUD se relacionan con tu proyecto:
 
+1. **Crear (Create)**:
+   - La operación de inserción de datos se realiza cuando los usuarios seleccionan la opción "1. Insertar Leyes" en el menú.
+   - Los usuarios pueden ingresar información sobre leyes, como el tipo de normativa, número de normativa, fecha y descripción.
+   - Esta información se inserta en las tablas de la base de datos, es decir, en las tablas `Leyes`, `Jurisdicción` e `Identificadores`.
+
+2. **Leer (Read)**:
+   - La operación de lectura de datos se realiza cuando los usuarios seleccionan la opción "2. Ver Leyes Existentes" en el menú.
+   - Se muestra en pantalla la información almacenada en la base de datos, lo que permite a los usuarios ver las leyes existentes.
+
+3. **Actualizar (Update)**:
+   - La operación de actualización de datos se realiza cuando los usuarios seleccionan la opción "4. Actualizar un Registro" en el menú.
+   - Los usuarios pueden actualizar la fecha de un registro específico ingresando su número (Nro).
+   - Se realiza una operación de actualización en la base de datos para modificar la fecha del registro seleccionado.
+
+4. **Eliminar (Delete)**:
+   - La operación de eliminación de datos se realiza cuando los usuarios seleccionan la opción "5. Eliminar un Registro" en el menú.
+   - Los usuarios pueden eliminar registros basados en una palabra clave específica.
+   - Se lleva a cabo una serie de operaciones de eliminación en las tablas de la base de datos para eliminar los registros relacionados con la palabra clave.
+
+En resumen, tu proyecto cumple con los principios básicos de un CRUD, lo que permite a los usuarios gestionar la información de las leyes de manera efectiva, incluyendo la inserción, consulta, actualización y eliminación de datos en la base de datos.
 ## Integrantes del Grupo:
 -LEO PLAZA -DENISSE SABEFF -NOAH CASSUTTI -SANTIAGO TULIAN -MARCOS PORTELA -MATEO OTERO
 
